@@ -1,5 +1,3 @@
-# Estrutura_de_Dados_II
-
 # 📚 Estrutura de Dados II
 
 Após concluir a disciplina de **Estrutura de Dados I**, darei continuidade aos estudos na disciplina de **Estrutura de Dados II**, aprofundando os conhecimentos relacionados à organização, manipulação e otimização de dados em programas e sistemas.
