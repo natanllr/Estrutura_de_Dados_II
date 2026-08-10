@@ -14,4 +14,4 @@ Neste repositório, apresentarei o projeto, sua implementação e os principais 
 
 Este repositório tem como objetivo **documentar meu aprendizado em Estrutura de Dados II**, reunindo o projeto desenvolvido, implementações e conceitos estudados ao longo da disciplina.
 
-> 🚀 **Da teoria à prática:** aplicando os conhecimentos de Estrutura de Dados para desenvolver soluções mais eficientes e organizadas.
+🚀 **Da teoria à prática:** aplicando os conhecimentos de Estrutura de Dados para desenvolver soluções mais eficientes e organizadas.
