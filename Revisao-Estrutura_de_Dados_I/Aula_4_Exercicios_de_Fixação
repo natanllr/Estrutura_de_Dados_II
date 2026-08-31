@@ -1,0 +1,540 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyP2Kn+7jiCFVTV1HyMVFwH4",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/natanllr/Estrutura_de_Dados_II/blob/main/Revisao-Estrutura_de_Dados_I/Aula_4_Exercicios_de_Fixa%C3%A7%C3%A3o\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Exercício 1: Simulador \"Desfazer\""
+      ],
+      "metadata": {
+        "id": "KhoZOLKBycxO"
+      }
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 3,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "-Z-nzcGxvxuW",
+        "outputId": "a832371d-10e2-4cfd-c7a4-ed3239952d23"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Texto atual: Olá \n",
+            "Texto atual: Olá mundo!\n",
+            "Texto atual: Olá \n",
+            "Texto atual: Olá Python\n",
+            "Texto atual: Olá programação\n",
+            "Texto atual: Olá Python\n",
+            "Texto atual: Olá Py\n",
+            "Texto atual: Olá Python\n"
+          ]
+        }
+      ],
+      "source": [
+        "class Desfazer:\n",
+        "    def __init__(self):\n",
+        "        self.pilha = []\n",
+        "        self.texto = \"\"\n",
+        "\n",
+        "    def digitar(self, texto):\n",
+        "        self.pilha.append((\"digitar\", texto))\n",
+        "        self.texto += texto\n",
+        "\n",
+        "    def apagar(self, quantidade):\n",
+        "        apagado = self.texto[-quantidade:]\n",
+        "        self.pilha.append((\"apagar\", apagado))\n",
+        "        self.texto = self.texto[:-quantidade]\n",
+        "\n",
+        "    def substituir(self, antigo, novo):\n",
+        "        if antigo in self.texto:\n",
+        "            self.pilha.append((\"substituir\", antigo, novo))\n",
+        "            self.texto = self.texto.replace(antigo, novo, 1)\n",
+        "\n",
+        "    def desfazer(self):\n",
+        "        if not self.pilha:\n",
+        "            print(\"Não há ações para desfazer.\")\n",
+        "            return\n",
+        "\n",
+        "        acao = self.pilha.pop()\n",
+        "\n",
+        "        if acao[0] == \"digitar\":\n",
+        "            texto = acao[1]\n",
+        "            self.texto = self.texto[:-len(texto)]\n",
+        "\n",
+        "        elif acao[0] == \"apagar\":\n",
+        "            texto_apagado = acao[1]\n",
+        "            self.texto += texto_apagado\n",
+        "\n",
+        "        elif acao[0] == \"substituir\":\n",
+        "            antigo = acao[1]\n",
+        "            novo = acao[2]\n",
+        "            self.texto = self.texto.replace(novo, antigo, 1)\n",
+        "\n",
+        "    def mostrar(self):\n",
+        "        print(\"Texto atual:\", self.texto)\n",
+        "\n",
+        "\n",
+        "# Programa principal\n",
+        "editor = Desfazer()\n",
+        "\n",
+        "editor.digitar(\"Olá \")\n",
+        "editor.mostrar()\n",
+        "\n",
+        "editor.digitar(\"mundo!\")\n",
+        "editor.mostrar()\n",
+        "\n",
+        "editor.desfazer()\n",
+        "editor.mostrar()\n",
+        "\n",
+        "editor.digitar(\"Python\")\n",
+        "editor.mostrar()\n",
+        "\n",
+        "editor.substituir(\"Python\", \"programação\")\n",
+        "editor.mostrar()\n",
+        "\n",
+        "editor.desfazer()\n",
+        "editor.mostrar()\n",
+        "\n",
+        "editor.apagar(4)\n",
+        "editor.mostrar()\n",
+        "\n",
+        "editor.desfazer()\n",
+        "editor.mostrar()"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Exercicío 2: O Sistema de Impressão"
+      ],
+      "metadata": {
+        "id": "6kDJycG1yrO3"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "class Impressora:\n",
+        "    def __init__(self):\n",
+        "        self.fila = []\n",
+        "\n",
+        "    def adicionar(self, documento):\n",
+        "        self.fila.append(documento)\n",
+        "        print(\"Documento adicionado:\", documento)\n",
+        "\n",
+        "    def imprimir(self):\n",
+        "        if not self.fila:\n",
+        "            print(\"Não há documentos na fila.\")\n",
+        "            return\n",
+        "\n",
+        "        documento = self.fila.pop(0)\n",
+        "        print(\"Imprimindo:\", documento)\n",
+        "\n",
+        "    def mostrar_fila(self):\n",
+        "        if not self.fila:\n",
+        "            print(\"A fila está vazia.\")\n",
+        "        else:\n",
+        "            print(\"Fila de impressão:\")\n",
+        "            for documento in self.fila:\n",
+        "                print(\"-\", documento)\n",
+        "\n",
+        "\n",
+        "# Programa principal\n",
+        "\n",
+        "impressora = Impressora()\n",
+        "\n",
+        "impressora.adicionar(\"Trabalho de Python.pdf\")\n",
+        "impressora.adicionar(\"Relatório.docx\")\n",
+        "impressora.adicionar(\"Currículo.pdf\")\n",
+        "\n",
+        "impressora.mostrar_fila()\n",
+        "\n",
+        "impressora.imprimir()\n",
+        "impressora.imprimir()\n",
+        "\n",
+        "impressora.mostrar_fila()\n",
+        "\n",
+        "impressora.imprimir()\n",
+        "impressora.imprimir()"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "TxP6hg36yznZ",
+        "outputId": "748b7b7e-bd24-4250-efe5-97aa9ee0e405"
+      },
+      "execution_count": 4,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Documento adicionado: Trabalho de Python.pdf\n",
+            "Documento adicionado: Relatório.docx\n",
+            "Documento adicionado: Currículo.pdf\n",
+            "Fila de impressão:\n",
+            "- Trabalho de Python.pdf\n",
+            "- Relatório.docx\n",
+            "- Currículo.pdf\n",
+            "Imprimindo: Trabalho de Python.pdf\n",
+            "Imprimindo: Relatório.docx\n",
+            "Fila de impressão:\n",
+            "- Currículo.pdf\n",
+            "Imprimindo: Currículo.pdf\n",
+            "Não há documentos na fila.\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Desafio Master: Sistema de Prioridade de Hospital"
+      ],
+      "metadata": {
+        "id": "x8WIDq4Zz3Vi"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "class Hospital:\n",
+        "    def __init__(self):\n",
+        "        self.fila = []\n",
+        "\n",
+        "    def adicionar(self, nome):\n",
+        "        self.fila.append(nome)\n",
+        "        print(f\"{nome} adicionado!\")\n",
+        "\n",
+        "    def remover(self):\n",
+        "        if not self.fila:\n",
+        "            print(\"A fila está vazia.\")\n",
+        "            return\n",
+        "\n",
+        "        atendido = self.fila.pop(0)  # Remove e retorna o primeiro da fila\n",
+        "        print(f\"{atendido} foi atendido com sucesso!\")\n",
+        "\n",
+        "    def mostrar_fila(self):\n",
+        "        if not self.fila:\n",
+        "            print(\"A fila está vazia.\")\n",
+        "        else:\n",
+        "            print(\"Fila de Atendimento:\")\n",
+        "            for nome in self.fila:\n",
+        "                print(\"-\", nome)\n",
+        "\n",
+        "    def prioridade(self, nome):\n",
+        "        self.fila.insert(0, nome)  # Insere no início da fila (posição 0)\n",
+        "        print(f\"{nome} adicionado com prioridade!\")\n",
+        "\n",
+        "\n",
+        "# --- Testando as funções ---\n",
+        "\n",
+        "# 1. Criando a instância do hospital\n",
+        "meu_hospital = Hospital()\n",
+        "\n",
+        "# 2. Adicionando pacientes normais\n",
+        "print(\"--- Adicionando Pacientes ---\")\n",
+        "meu_hospital.adicionar(\"João\")\n",
+        "meu_hospital.adicionar(\"Maria\")\n",
+        "meu_hospital.adicionar(\"Carlos\")\n",
+        "\n",
+        "# 3. Exibindo a fila atual\n",
+        "print(\"\\n--- Estado da Fila ---\")\n",
+        "meu_hospital.mostrar_fila()\n",
+        "\n",
+        "# 4. Adicionando uma prioridade\n",
+        "print(\"\\n--- Chegada de Prioridade ---\")\n",
+        "meu_hospital.prioridade(\"Dona Ana (Idosa)\")\n",
+        "\n",
+        "# 5. Exibindo a fila com a prioridade no topo\n",
+        "print(\"\\n--- Estado da Fila ---\")\n",
+        "meu_hospital.mostrar_fila()\n",
+        "\n",
+        "# 6. Atendendo (removendo) pacientes\n",
+        "print(\"\\n--- Atendimento ---\")\n",
+        "meu_hospital.remover()  # Atende Dona Ana\n",
+        "meu_hospital.remover()  # Atende João\n",
+        "\n",
+        "# 7. Exibindo a fila após atendimentos\n",
+        "print(\"\\n--- Estado da Fila ---\")\n",
+        "meu_hospital.mostrar_fila()"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Cq4lmIXP0NPF",
+        "outputId": "db5c5714-7523-4bc1-c183-64eeab76a669"
+      },
+      "execution_count": 8,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "--- Adicionando Pacientes ---\n",
+            "João adicionado!\n",
+            "Maria adicionado!\n",
+            "Carlos adicionado!\n",
+            "\n",
+            "--- Estado da Fila ---\n",
+            "Fila de Atendimento:\n",
+            "- João\n",
+            "- Maria\n",
+            "- Carlos\n",
+            "\n",
+            "--- Chegada de Prioridade ---\n",
+            "Dona Ana (Idosa) adicionado com prioridade!\n",
+            "\n",
+            "--- Estado da Fila ---\n",
+            "Fila de Atendimento:\n",
+            "- Dona Ana (Idosa)\n",
+            "- João\n",
+            "- Maria\n",
+            "- Carlos\n",
+            "\n",
+            "--- Atendimento ---\n",
+            "Dona Ana (Idosa) foi atendido com sucesso!\n",
+            "João foi atendido com sucesso!\n",
+            "\n",
+            "--- Estado da Fila ---\n",
+            "Fila de Atendimento:\n",
+            "- Maria\n",
+            "- Carlos\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Exercicío de Fixação: Pilha Matemática"
+      ],
+      "metadata": {
+        "id": "1nUeic2l_2Lm"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "class PilhaMatematica:\n",
+        "    def __init__(self):\n",
+        "        self.itens = []\n",
+        "\n",
+        "    def empilhar(self, numero):\n",
+        "        self.itens.append(numero)\n",
+        "\n",
+        "    def desempilhar(self):\n",
+        "        if not self.esta_vazia():\n",
+        "            return self.itens.pop()\n",
+        "        return None\n",
+        "\n",
+        "    def esta_vazia(self):\n",
+        "        return len(self.itens) == 0\n",
+        "\n",
+        "    def mostrar_pilha(self):\n",
+        "        if self.esta_vazia():\n",
+        "            print(\"Pilha:(Vazia)\")\n",
+        "        else:\n",
+        "            # Exibe os elementos da pilha (da base ao topo)\n",
+        "            print(f\"Pilha (base -> topo): {self.itens}\")\n",
+        "\n",
+        "    def esvaziar_e_somar(self):\n",
+        "        soma = 0\n",
+        "        # Percorre esvaziando a pilha iterativamente\n",
+        "        while not self.esta_vazia():\n",
+        "            soma += self.desempilhar()\n",
+        "        return soma\n",
+        "\n",
+        "\n",
+        "# --- Testando a Pilha ---\n",
+        "\n",
+        "pilha = PilhaMatematica()\n",
+        "\n",
+        "# 1. Inserindo elementos\n",
+        "pilha.empilhar(10)\n",
+        "pilha.empilhar(20)\n",
+        "pilha.empilhar(30)\n",
+        "pilha.empilhar(5)\n",
+        "\n",
+        "# 2. Mostrando a pilha ANTES de esvaziar\n",
+        "print(\"--- Estado Inicial ---\")\n",
+        "pilha.mostrar_pilha()\n",
+        "\n",
+        "# 3. Esvaziando e somando os elementos\n",
+        "soma_total = pilha.esvaziar_e_somar()\n",
+        "\n",
+        "# 4. Mostrando o resultado e a pilha DEPOIS de esvaziar\n",
+        "print(\"\\n--- Processando ---\")\n",
+        "print(f\"Soma total dos elementos removidos: {soma_total}\")\n",
+        "\n",
+        "print(\"\\n--- Estado Final ---\")\n",
+        "pilha.mostrar_pilha()"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "WhyBGxgV_9gp",
+        "outputId": "d04f9fdf-2ec7-48fc-d2dc-4da10f9e3f22"
+      },
+      "execution_count": 11,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "--- Estado Inicial ---\n",
+            "Pilha (base -> topo): [10, 20, 30, 5]\n",
+            "\n",
+            "--- Processando ---\n",
+            "Soma total dos elementos removidos: 65\n",
+            "\n",
+            "--- Estado Final ---\n",
+            "Pilha:(Vazia)\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Exercicío de Fixação: O Call Center"
+      ],
+      "metadata": {
+        "id": "vJQSFJaABPG_"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from collections import deque\n",
+        "\n",
+        "class CallCenter:\n",
+        "    def __init__(self):\n",
+        "        # Utilizando deque para maior eficiência em filas\n",
+        "        self.fila = deque()\n",
+        "\n",
+        "    def adicionar_cliente(self, nome):\n",
+        "        self.fila.append(nome)\n",
+        "        print(f\"-> Cliente '{nome}' entrou na fila de espera.\")\n",
+        "\n",
+        "    def chamar_proximo(self):\n",
+        "        if self.esta_vazia():\n",
+        "            print(\"Nenhum cliente na fila de espera.\")\n",
+        "            return None\n",
+        "\n",
+        "        # Remove o primeiro cliente que entrou (início da fila)\n",
+        "        atendido = self.fila.popleft()\n",
+        "        print(f\"--> Chamando cliente '{atendido}' para atendimento!\")\n",
+        "        return atendido\n",
+        "\n",
+        "    def esta_vazia(self):\n",
+        "        return len(self.fila) == 0\n",
+        "\n",
+        "    def mostrar_fila(self):\n",
+        "        if self.esta_vazia():\n",
+        "            print(\"Fila atual: [ VAZIA ]\")\n",
+        "        else:\n",
+        "            print(f\"Fila atual (primeiro -> último): {list(self.fila)}\")\n",
+        "\n",
+        "\n",
+        "# --- Simulando o Ciclo de Atendimento ---\n",
+        "\n",
+        "central = CallCenter()\n",
+        "\n",
+        "# 1. Clientes chegando\n",
+        "print(\"--- Chegada de Clientes ---\")\n",
+        "central.adicionar_cliente(\"Lucas\")\n",
+        "central.adicionar_cliente(\"Beatriz\")\n",
+        "central.adicionar_cliente(\"Gabriel\")\n",
+        "\n",
+        "print(\"\\n--- Estado Inicial ---\")\n",
+        "central.mostrar_fila()\n",
+        "\n",
+        "# 2. Atendendo alguns clientes e adicionando novos no meio do processo\n",
+        "print(\"\\n--- Ciclo de Atendimento ---\")\n",
+        "central.chamar_proximo()  # Atende Lucas\n",
+        "\n",
+        "print(\"\\nNovo cliente ligando...\")\n",
+        "central.adicionar_cliente(\"Fernanda\")\n",
+        "\n",
+        "print(\"\\nContinuando atendimentos...\")\n",
+        "central.chamar_proximo()  # Atende Beatriz\n",
+        "central.chamar_proximo()  # Atende Gabriel\n",
+        "\n",
+        "# 3. Estado final da fila\n",
+        "print(\"\\n--- Estado Final ---\")\n",
+        "central.mostrar_fila()"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "piabLu3qBaVd",
+        "outputId": "5b915f1b-d1fc-4450-99cb-25606280eb1a"
+      },
+      "execution_count": 12,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "--- Chegada de Clientes ---\n",
+            "-> Cliente 'Lucas' entrou na fila de espera.\n",
+            "-> Cliente 'Beatriz' entrou na fila de espera.\n",
+            "-> Cliente 'Gabriel' entrou na fila de espera.\n",
+            "\n",
+            "--- Estado Inicial ---\n",
+            "Fila atual (primeiro -> último): ['Lucas', 'Beatriz', 'Gabriel']\n",
+            "\n",
+            "--- Ciclo de Atendimento ---\n",
+            "--> Chamando cliente 'Lucas' para atendimento!\n",
+            "\n",
+            "Novo cliente ligando...\n",
+            "-> Cliente 'Fernanda' entrou na fila de espera.\n",
+            "\n",
+            "Continuando atendimentos...\n",
+            "--> Chamando cliente 'Beatriz' para atendimento!\n",
+            "--> Chamando cliente 'Gabriel' para atendimento!\n",
+            "\n",
+            "--- Estado Final ---\n",
+            "Fila atual (primeiro -> último): ['Fernanda']\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
