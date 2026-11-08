@@ -10,6 +10,14 @@ Ao longo da disciplina, será desenvolvido um **projeto prático relacionado aos
 
 Neste repositório, apresentarei o projeto, sua implementação e os principais conceitos utilizados, permitindo acompanhar minha evolução durante a disciplina e visualizar como os conhecimentos de **Estrutura de Dados I e II** podem ser aplicados no desenvolvimento de soluções computacionais.
 
+## 📂 Conteúdo do repositório
+
+- **Revisao-Estrutura_de_Dados_I**: revisão de Estrutura de Dados I (aulas, exercícios de fixação, projeto e apostila).
+- **Estrutura_de_dados_avancado**: conteúdos de Estrutura de Dados II.
+  - **Trabalho_Arvores**: jogo com árvores BST e AVL em Python.
+  - **Grafos**: aula e atividade sobre grafos.
+  - **Trabalho_conectaUDF**: mini-projeto de rede social com grafos (graus, amizades e densidade).
+
 ## 🎯 Objetivo
 
 Este repositório tem como objetivo **documentar meu aprendizado em Estrutura de Dados II**, reunindo o projeto desenvolvido, implementações e conceitos estudados ao longo da disciplina.
