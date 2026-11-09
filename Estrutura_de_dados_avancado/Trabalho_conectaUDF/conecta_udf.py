@@ -11,18 +11,30 @@ rede_antes = {
     "Felipe": ["Diego", "Elisa"]
 }
 
-# Rede com os 4 usuarios novos e as 5 amizades novas
+# Rede do grupo: Arthur, Natan, Matheus e Ivo, cada um com 5 amigos
 rede_depois = {
-    "Ana": ["Bruno", "Carla", "Gabriel"],
-    "Bruno": ["Ana", "Carla", "Diego"],
-    "Carla": ["Ana", "Bruno", "Elisa"],
-    "Diego": ["Bruno", "Elisa", "Felipe", "Igor"],
-    "Elisa": ["Carla", "Diego", "Felipe"],
-    "Felipe": ["Diego", "Elisa", "Helena"],
-    "Gabriel": ["Ana", "Helena"],
-    "Helena": ["Gabriel", "Felipe"],
-    "Igor": ["Diego", "Julia"],
-    "Julia": ["Igor"]
+    "Arthur": ["Bianca", "Caio", "Daniela", "Eduardo", "Nathalia"],
+    "Natan": ["Bianca", "Fernanda", "Gustavo", "Heloisa", "Icaro"],
+    "Matheus": ["Fernanda", "Joana", "Kaique", "Larissa", "Murilo"],
+    "Ivo": ["Joana", "Nathalia", "Otavio", "Paula", "Rafael"],
+
+    "Bianca": ["Arthur", "Natan"],
+    "Fernanda": ["Natan", "Matheus"],
+    "Joana": ["Matheus", "Ivo"],
+    "Nathalia": ["Ivo", "Arthur"],
+
+    "Caio": ["Arthur"],
+    "Daniela": ["Arthur"],
+    "Eduardo": ["Arthur"],
+    "Gustavo": ["Natan"],
+    "Heloisa": ["Natan"],
+    "Icaro": ["Natan"],
+    "Kaique": ["Matheus"],
+    "Larissa": ["Matheus"],
+    "Murilo": ["Matheus"],
+    "Otavio": ["Ivo"],
+    "Paula": ["Ivo"],
+    "Rafael": ["Ivo"]
 }
 
 
