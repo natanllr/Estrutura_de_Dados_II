@@ -1,8 +1,8 @@
 # Atividade de Revisão — Árvores
 
-**Aluno:** Natan Adriel de Almeida Rodrigues
-**Disciplina:** Estrutura de Dados II
-**Professora:** Kadidja Valéria
+**Aluno:** Natan Adriel de Almeida Rodrigues\
+**Disciplina:** Estrutura de Dados II\
+**Professora:** Kadidja Valéria\
 **Atividade individual**
 
 ---
