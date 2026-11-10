@@ -1,118 +1,98 @@
 # ConectaUDF - Desafio em grupo
 
-## Passo 1: Grafo original
+**Estrutura de Dados II**
 
-6 usuários e 8 amizades.
+**Grupo:** Arthur Arraes Antunes, Natan Adriel de Almeida Rodrigues, Matheus Enrico Corrêa Peters e Ivo Gustavo de Farias Barbosa
 
-![Rede original](grafo_rede_original.png)
+## Passo 1: Rede antes
 
-## Passo 2: Rede do grupo
+A rede começa com 6 usuários e 8 amizades: Lucas, Sofia, Vitor, Camila, Thiago e Yasmin.
 
-Fizemos uma rede nova só com os 4 integrantes do grupo. Cada um tem 5 amigos:
+![Rede antes](grafo_antes.png)
 
-- Arthur: Bianca, Caio, Daniela, Eduardo e Nathália
-- Natan: Bianca, Fernanda, Gustavo, Heloísa e Ícaro
-- Matheus: Fernanda, Joana, Kaique, Larissa e Murilo
-- Ivo: Joana, Nathália, Otávio, Paula e Rafael
+## Passo 2: Rede depois (com o grupo)
 
-Bianca, Fernanda, Joana e Nathália são amigas de dois integrantes, por isso a rede fica toda ligada. No total são 20 vértices (4 integrantes + 16 amigos).
+Entramos na rede nós 4 do grupo: Arthur, Natan, Matheus e Ivo. Cada um tem 5 amigos:
 
-![Rede do grupo](grafo_rede_grupo.png)
+- Arthur: Lucas, Sofia, Thiago, Matheus e Ivo
+- Matheus: Camila, Yasmin, Vitor, Arthur e Natan
+- Natan: Yasmin, Thiago, Sofia, Matheus e Ivo
+- Ivo: Vitor, Lucas, Camila, Arthur e Natan
+
+Nós 4 ficamos ligados entre si (Arthur, Matheus, Natan, Ivo e de volta pro Arthur), o que fecha o grafo. Foram 16 amizades novas, então a rede ficou com 10 usuários e 24 amizades.
+
+![Rede depois](grafo_depois.png)
 
 ## Passo 3: Tabela de graus
 
-Rede original:
-
-| Usuário | Grau |
-|---|---|
-| Ana | 2 |
-| Bruno | 3 |
-| Carla | 3 |
-| Diego | 3 |
-| Elisa | 3 |
-| Felipe | 2 |
-| Total | 16 |
-
-Rede do grupo:
-
-| Usuário | Grau |
-|---|---|
-| Arthur | 5 |
-| Natan | 5 |
-| Matheus | 5 |
-| Ivo | 5 |
-| Bianca | 2 |
-| Fernanda | 2 |
-| Joana | 2 |
-| Nathália | 2 |
-| Caio | 1 |
-| Daniela | 1 |
-| Eduardo | 1 |
-| Gustavo | 1 |
-| Heloísa | 1 |
-| Ícaro | 1 |
-| Kaique | 1 |
-| Larissa | 1 |
-| Murilo | 1 |
-| Otávio | 1 |
-| Paula | 1 |
-| Rafael | 1 |
-| Total | 40 |
+| Usuário | Grau antes | Grau depois |
+|---|---|---|
+| Lucas | 2 | 4 |
+| Sofia | 3 | 5 |
+| Vitor | 3 | 5 |
+| Camila | 3 | 5 |
+| Thiago | 3 | 5 |
+| Yasmin | 2 | 4 |
+| Arthur | - | 5 |
+| Matheus | - | 5 |
+| Natan | - | 5 |
+| Ivo | - | 5 |
+| **Total** | **16** | **48** |
 
 ## Passo 4: Cálculos
 
-Rede original:
+Antes:
+
 - V = 6
 - E = 16 / 2 = 8
 - D = 2 x 8 / (6 x 5) = 16 / 30 = 53,3%
 
-Rede do grupo:
-- V = 20
-- E = 40 / 2 = 20
-- D = 2 x 20 / (20 x 19) = 40 / 380 = 10,5%
+Depois:
 
-A rede do grupo tem mais usuários e mais amizades, mas a densidade é bem menor (10,5% contra 53,3%). Isso acontece porque a maioria dos amigos conhece só um integrante, então quase todas as amizades possíveis não existem.
+- V = 10
+- E = 48 / 2 = 24
+- D = 2 x 24 / (10 x 9) = 48 / 90 = 53,3%
 
-## Passo 5: Código
+Grau médio: antes 16 / 6 = 2,67 e depois 48 / 10 = 4,8.
+
+A densidade ficou igual. O número de amizades triplicou (de 8 pra 24), mas o número de amizades possíveis também triplicou (de 15 pra 45), então a proporção não mudou.
+
+## Passo 5: Caminhos
+
+- Lucas até Yasmin: Lucas → Sofia → Camila → Yasmin (3 arestas). Continua com 3 mesmo depois que o grupo entrou.
+- Arthur até Natan: Arthur → Sofia → Natan (2 arestas). Também dá por Matheus, Ivo ou Thiago.
+
+## Passo 6: Código
 
 ```python
 # Projeto ConectaUDF - Desafio em grupo
 # Estrutura de Dados II
+# Grupo: Arthur, Natan, Matheus e Ivo
 
-# Rede original
+from collections import deque
+
+# Rede antes: 6 usuarios e 8 amizades
 rede_antes = {
-    "Ana": ["Bruno", "Carla"],
-    "Bruno": ["Ana", "Carla", "Diego"],
-    "Carla": ["Ana", "Bruno", "Elisa"],
-    "Diego": ["Bruno", "Elisa", "Felipe"],
-    "Elisa": ["Carla", "Diego", "Felipe"],
-    "Felipe": ["Diego", "Elisa"]
+    "Lucas": ["Sofia", "Vitor"],
+    "Sofia": ["Lucas", "Vitor", "Camila"],
+    "Vitor": ["Lucas", "Sofia", "Thiago"],
+    "Camila": ["Sofia", "Thiago", "Yasmin"],
+    "Thiago": ["Vitor", "Camila", "Yasmin"],
+    "Yasmin": ["Camila", "Thiago"]
 }
 
-# Rede do grupo: Arthur, Natan, Matheus e Ivo, cada um com 5 amigos
+# Rede depois: entram Arthur, Natan, Matheus e Ivo, cada um com 5 amigos
 rede_depois = {
-    "Arthur": ["Bianca", "Caio", "Daniela", "Eduardo", "Nathalia"],
-    "Natan": ["Bianca", "Fernanda", "Gustavo", "Heloisa", "Icaro"],
-    "Matheus": ["Fernanda", "Joana", "Kaique", "Larissa", "Murilo"],
-    "Ivo": ["Joana", "Nathalia", "Otavio", "Paula", "Rafael"],
-
-    "Bianca": ["Arthur", "Natan"],
-    "Fernanda": ["Natan", "Matheus"],
-    "Joana": ["Matheus", "Ivo"],
-    "Nathalia": ["Ivo", "Arthur"],
-
-    "Caio": ["Arthur"],
-    "Daniela": ["Arthur"],
-    "Eduardo": ["Arthur"],
-    "Gustavo": ["Natan"],
-    "Heloisa": ["Natan"],
-    "Icaro": ["Natan"],
-    "Kaique": ["Matheus"],
-    "Larissa": ["Matheus"],
-    "Murilo": ["Matheus"],
-    "Otavio": ["Ivo"],
-    "Paula": ["Ivo"],
-    "Rafael": ["Ivo"]
+    "Lucas": ["Sofia", "Vitor", "Arthur", "Ivo"],
+    "Sofia": ["Lucas", "Vitor", "Camila", "Arthur", "Natan"],
+    "Vitor": ["Lucas", "Sofia", "Thiago", "Matheus", "Ivo"],
+    "Camila": ["Sofia", "Thiago", "Yasmin", "Matheus", "Ivo"],
+    "Thiago": ["Vitor", "Camila", "Yasmin", "Arthur", "Natan"],
+    "Yasmin": ["Camila", "Thiago", "Matheus", "Natan"],
+    "Arthur": ["Lucas", "Sofia", "Thiago", "Matheus", "Ivo"],
+    "Matheus": ["Camila", "Yasmin", "Vitor", "Arthur", "Natan"],
+    "Natan": ["Yasmin", "Thiago", "Sofia", "Matheus", "Ivo"],
+    "Ivo": ["Vitor", "Lucas", "Camila", "Arthur", "Natan"]
 }
 
 
@@ -133,70 +113,81 @@ def calcular(rede, nome):
     print()
 
 
+# Busca em largura (BFS) para achar o menor caminho entre dois usuarios
+def caminho(rede, inicio, fim):
+    fila = deque([[inicio]])
+    visitados = {inicio}
+    while fila:
+        atual = fila.popleft()
+        if atual[-1] == fim:
+            return atual
+        for amigo in rede[atual[-1]]:
+            if amigo not in visitados:
+                visitados.add(amigo)
+                fila.append(atual + [amigo])
+    return None
+
+
 calcular(rede_antes, "ANTES")
 calcular(rede_depois, "DEPOIS")
+
+print("Caminho Lucas -> Yasmin:", " -> ".join(caminho(rede_depois, "Lucas", "Yasmin")))
+print("Caminho Arthur -> Natan:", " -> ".join(caminho(rede_depois, "Arthur", "Natan")))
 ```
 
 Resultado:
 
 ```
 ---- ANTES ----
-Ana - grau: 2
-Bruno - grau: 3
-Carla - grau: 3
-Diego - grau: 3
-Elisa - grau: 3
-Felipe - grau: 2
+Lucas - grau: 2
+Sofia - grau: 3
+Vitor - grau: 3
+Camila - grau: 3
+Thiago - grau: 3
+Yasmin - grau: 2
 Usuarios: 6
 Soma dos graus: 16
 Amizades: 8
 Densidade: 53.33%
 
 ---- DEPOIS ----
+Lucas - grau: 4
+Sofia - grau: 5
+Vitor - grau: 5
+Camila - grau: 5
+Thiago - grau: 5
+Yasmin - grau: 4
 Arthur - grau: 5
-Natan - grau: 5
 Matheus - grau: 5
+Natan - grau: 5
 Ivo - grau: 5
-Bianca - grau: 2
-Fernanda - grau: 2
-Joana - grau: 2
-Nathalia - grau: 2
-Caio - grau: 1
-Daniela - grau: 1
-Eduardo - grau: 1
-Gustavo - grau: 1
-Heloisa - grau: 1
-Icaro - grau: 1
-Kaique - grau: 1
-Larissa - grau: 1
-Murilo - grau: 1
-Otavio - grau: 1
-Paula - grau: 1
-Rafael - grau: 1
-Usuarios: 20
-Soma dos graus: 40
-Amizades: 20
-Densidade: 10.53%
+Usuarios: 10
+Soma dos graus: 48
+Amizades: 24
+Densidade: 53.33%
+
+Caminho Lucas -> Yasmin: Lucas -> Sofia -> Camila -> Yasmin
+Caminho Arthur -> Natan: Arthur -> Sofia -> Natan
 ```
 
 ## Perguntas
 
 1. Quem é mais conectado? Isso significa que é o mais influente?
 
-Arthur, Natan, Matheus e Ivo, com grau 5. Mas ter mais amigos não quer dizer ser mais influente. Bianca, Fernanda, Joana e Nathália têm só 2 amigos, mas são elas que ligam um integrante ao outro.
+Oito usuários empatam com grau 5: Sofia, Vitor, Camila, Thiago e nós 4 do grupo. Mas ter mais amigos não quer dizer ser mais influente. O grupo, por exemplo, liga um lado da rede ao outro, então a informação passa mais rápido por nós do que só pelo grau dá pra ver.
 
 2. Como sugerir amizade usando amigos em comum?
 
-Vendo os amigos dos amigos. Arthur e Natan têm a Bianca como amiga em comum, então a rede pode sugerir o Natan para o Arthur. Quanto mais amigos em comum, melhor a sugestão.
+Olhando os amigos dos amigos. Arthur e Natan não são amigos, mas têm 4 amigos em comum (Sofia, Thiago, Matheus e Ivo), então a rede deveria sugerir um pro outro. Quanto mais amigos em comum, melhor a sugestão.
 
 3. Que cuidados de privacidade são necessários?
 
-Não mostrar os amigos de alguém sem permissão e deixar a pessoa escolher quem vê os dados dela, seguindo a LGPD.
+Não mostrar a lista de amigos de ninguém sem permissão, deixar a pessoa escolher quem vê os dados dela e não usar essas informações pra outra coisa sem avisar, seguindo a LGPD.
 
 4. Quais outras métricas podem descrever uma rede?
 
-Grau médio, menor distância entre dois usuários e quantos grupos separados existem.
+Grau médio, menor caminho entre dois usuários (que calculamos com BFS no código) e quantos grupos separados existem na rede.
 
 ## Conclusão
 
-A rede original tem 6 usuários e 8 amizades, com densidade de 53,3%. A rede do grupo tem 20 usuários e 20 amizades, com densidade de 10,5%. Uma rede maior não fica necessariamente mais conectada. Com o dicionário em Python foi fácil calcular os graus, as amizades e a densidade.
+Antes a rede tinha 6 usuários, 8 amizades e densidade de 53,3%. Depois que o grupo entrou, ficou com 10 usuários, 24 amizades e a mesma densidade de 53,3%. O grau médio subiu de 2,67 pra 4,8, ou seja, cada pessoa ficou com mais amigos, mas a rede não ficou mais "cheia" proporcionalmente. Com o dicionário em Python foi fácil calcular os graus, as amizades, a densidade e até os caminhos com BFS.

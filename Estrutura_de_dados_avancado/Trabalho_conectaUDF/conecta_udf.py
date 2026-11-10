@@ -1,40 +1,31 @@
 # Projeto ConectaUDF - Desafio em grupo
 # Estrutura de Dados II
+# Grupo: Arthur, Natan, Matheus e Ivo
 
-# Rede original
+from collections import deque
+
+# Rede antes: 6 usuarios e 8 amizades
 rede_antes = {
-    "Ana": ["Bruno", "Carla"],
-    "Bruno": ["Ana", "Carla", "Diego"],
-    "Carla": ["Ana", "Bruno", "Elisa"],
-    "Diego": ["Bruno", "Elisa", "Felipe"],
-    "Elisa": ["Carla", "Diego", "Felipe"],
-    "Felipe": ["Diego", "Elisa"]
+    "Lucas": ["Sofia", "Vitor"],
+    "Sofia": ["Lucas", "Vitor", "Camila"],
+    "Vitor": ["Lucas", "Sofia", "Thiago"],
+    "Camila": ["Sofia", "Thiago", "Yasmin"],
+    "Thiago": ["Vitor", "Camila", "Yasmin"],
+    "Yasmin": ["Camila", "Thiago"]
 }
 
-# Rede do grupo: Arthur, Natan, Matheus e Ivo, cada um com 5 amigos
+# Rede depois: entram Arthur, Natan, Matheus e Ivo, cada um com 5 amigos
 rede_depois = {
-    "Arthur": ["Bianca", "Caio", "Daniela", "Eduardo", "Nathalia"],
-    "Natan": ["Bianca", "Fernanda", "Gustavo", "Heloisa", "Icaro"],
-    "Matheus": ["Fernanda", "Joana", "Kaique", "Larissa", "Murilo"],
-    "Ivo": ["Joana", "Nathalia", "Otavio", "Paula", "Rafael"],
-
-    "Bianca": ["Arthur", "Natan"],
-    "Fernanda": ["Natan", "Matheus"],
-    "Joana": ["Matheus", "Ivo"],
-    "Nathalia": ["Ivo", "Arthur"],
-
-    "Caio": ["Arthur"],
-    "Daniela": ["Arthur"],
-    "Eduardo": ["Arthur"],
-    "Gustavo": ["Natan"],
-    "Heloisa": ["Natan"],
-    "Icaro": ["Natan"],
-    "Kaique": ["Matheus"],
-    "Larissa": ["Matheus"],
-    "Murilo": ["Matheus"],
-    "Otavio": ["Ivo"],
-    "Paula": ["Ivo"],
-    "Rafael": ["Ivo"]
+    "Lucas": ["Sofia", "Vitor", "Arthur", "Ivo"],
+    "Sofia": ["Lucas", "Vitor", "Camila", "Arthur", "Natan"],
+    "Vitor": ["Lucas", "Sofia", "Thiago", "Matheus", "Ivo"],
+    "Camila": ["Sofia", "Thiago", "Yasmin", "Matheus", "Ivo"],
+    "Thiago": ["Vitor", "Camila", "Yasmin", "Arthur", "Natan"],
+    "Yasmin": ["Camila", "Thiago", "Matheus", "Natan"],
+    "Arthur": ["Lucas", "Sofia", "Thiago", "Matheus", "Ivo"],
+    "Matheus": ["Camila", "Yasmin", "Vitor", "Arthur", "Natan"],
+    "Natan": ["Yasmin", "Thiago", "Sofia", "Matheus", "Ivo"],
+    "Ivo": ["Vitor", "Lucas", "Camila", "Arthur", "Natan"]
 }
 
 
@@ -55,5 +46,23 @@ def calcular(rede, nome):
     print()
 
 
+# Busca em largura (BFS) para achar o menor caminho entre dois usuarios
+def caminho(rede, inicio, fim):
+    fila = deque([[inicio]])
+    visitados = {inicio}
+    while fila:
+        atual = fila.popleft()
+        if atual[-1] == fim:
+            return atual
+        for amigo in rede[atual[-1]]:
+            if amigo not in visitados:
+                visitados.add(amigo)
+                fila.append(atual + [amigo])
+    return None
+
+
 calcular(rede_antes, "ANTES")
 calcular(rede_depois, "DEPOIS")
+
+print("Caminho Lucas -> Yasmin:", " -> ".join(caminho(rede_depois, "Lucas", "Yasmin")))
+print("Caminho Arthur -> Natan:", " -> ".join(caminho(rede_depois, "Arthur", "Natan")))
